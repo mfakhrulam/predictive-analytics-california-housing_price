@@ -126,8 +126,11 @@ Kesimpulan hasil proyek:
   Boosting	48981.361864	50111.97536
   ```
 - Ketiga model masih _overfit_, terutama model _Random Forest_.
-- Hasil _error_ MAE paling kecil ada pada model _Random Forest_ yang artinya model ini merupakan model yang terbaik dibanding dua model lain.
+- Model _Random Forest_ memiliki hasil _error_ MAE paling kecil yang artinya model ini merupakan model yang terbaik dibanding dua model lain.  
   ![Metrik evaluasi](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/09-metrik-evaluasi.png)  
+  Selain itu, model ini juga yang paling presisi untuk memprediksi harga. Berikut grafik perbedaan prediksi ketiga model.  
+  ![Perbandingan prediksi](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/10-prediksi.png)  
+  
 
 ## Referensi
 <a id="1">[1]</a> 
