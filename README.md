@@ -60,33 +60,34 @@ housing.isnull().sum()
 ```py
 sns.heatmap(housing.isnull(), cbar = False, cmap='flare')
 ```
-![Heatmap Mising Value](\images\01-heatmap-missing-value.png)
+![Heatmap Mising Value](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/01-heatmap-missing-value.png)  
 Nilai yang kosong itu dapat diisi menggunakan median dari data terkait.
 ```py
 housing['total_bedrooms'].fillna(value=housing['total_bedrooms'].median(), inplace=True)
 ```
 Selanjutnya yaitu melihat outliers dari data.
-![Outliers](\images\02-outliers.png)
+![Outliers](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/02-outliers.png)  
+
 Tampak bahwa banyak fitur memiliki outliers.  
 **Kemudian akan ditampilkan analisis univariate.** 
-**Categorical**
-![Univariate-Categorical](\images\03-univariate-categorical.png)
-**Numerical**
-![Univariate-Numerical](\images\04-univariate-numerical.png)
-**Kemudian akan ditampilkan analisis multivariate**.
-**Categorical**
-![Multivariate-Categorical](\images\05-multivariate-categorical.png)
-**Numerical**
-![Multivariate-Numerical](\images\06-multivariate-numerical.png)
-**Correlation Matrix untuk Fitur Numerical**
-![Correlation Matrix](\images\07-correlation-matrix.png)
-**Kesimpulan EDA**  
-- Terdapat outlier di banyak fitur yang perlu dihilangkan
-- Terdapat korelasi yang cukup tinggi antara median_house_value (target) dengan median_income
-- Rumah paling banyak terletak pada <1H OCEAN
-- Terdapat korelasi yang tinggi antara total_room, total_beedroom, population, dan households.
+**Categorical**  
+![Univariate-Categorical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/03-univariate-categorical.png)  
+**Numerical**  
+![Univariate-Numerical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/04-univariate-numerical.png)  
+**Kemudian akan ditampilkan analisis multivariate**.   
+**Categorical**  
+![Multivariate-Categorical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/05-multivariate-categorical.png)  
+**Numerical**  
+![Multivariate-Numerical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/06-multivariate-numerical.png)  
+**Correlation Matrix untuk Fitur Numerical**  
+![Correlation Matrix](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/07-correlation-matrix.png)  
+**Kesimpulan EDA**   
+- Terdapat outlier di banyak fitur yang perlu dihilangkan  
+- Terdapat korelasi yang cukup tinggi antara median_house_value (target) dengan median_income  
+- Rumah paling banyak terletak pada <1H OCEAN  
+- Terdapat korelasi yang tinggi antara total_room, total_beedroom, population, dan households.  
 
-## Data Preparation
+## Data Preparation  
 
 Ada beberapa teknik data preparation yang digunakan dalam proyek ini, antara lain:
 - Menghilangkan Outliers (Outliers Removal) adalah teknik untuk menghilangkan data yang nilainya sangat jauh daripada data lain. Outliers perlu dihilangkan karena akan menyebabkan bias pada model machine learning yang akan dibuat.
