@@ -99,11 +99,79 @@ Ada beberapa teknik _data preparation_ yang digunakan dalam proyek ini, antara l
 
 ## Modeling
 
-Ada tiga model _machine learning_ yang digunakan dalam proyek ini, yaitu model _KNN Regressor_, _Random Forest Regressor_, dan _Ada Boosting Regressor_. Setiap model _machine learning_ akan melalui proses _improvement_ dengan _hyperparameter tuning_ menggunakan metode _Grid Search_. Sebelum membuat model _machine learning_, siapkan dulu _dataframe_ untuk menyimpan hasil _training_ ketiga model. Hal ini juga akan digunakan pada tahap selanjutnya (_evaluation_). Kemudian siapkan tiga model yang akan digunakan.
-- _KNN Regressor_, parameter yang digunakan yaitu n_neighbor. Model ini memiliki kelebihan yaitu tidak ada waktu tunggu untuk proses pelatihan dan juga mudah untuk diimplementasikan. Kelemahannya yaitu model ini tidak cocok digunakan untuk data yang besar dan juga sensitif pada noise dan missing value.
-- _Random Forest Regressor_, parameter yang digunakan yaitu n_estimator, max_depth, random_state, dan n_jobs. Model ini memiliki kelebihan yaitu dapat bekerja baik pada fitur _categorical_ dan _numerical_, stabil, tidak sensitif terhadap _noise_. Kelemahannya yaitu memiliki algoritma yang kompleks, sehingga memiliki waktu _training_ yang lebih lama.
-- _Ada Boosting Regressor_, parameter yang digunakan yaitu learning_rate dan random_state. Model ini memeliki kelebihan yaitu kurang rentan terhadap _overfitting_. Kelemahannya yaitu model ini membutuhkan dataset yang berkualitas karena senstif terhadap noise dan outliers.
+Ada tiga model _machine learning_ yang digunakan dalam proyek ini, yaitu model _KNN Regressor_, _Random Forest Regressor_, dan _Ada Boosting Regressor_. Setiap model _machine learning_ akan melalui proses _improvement_ dengan _hyperparameter tuning_ menggunakan metode _Grid Search_. Sebelum membuat model _machine learning_, siapkan dulu _dataframe_ untuk menyimpan hasil _training_ ketiga model.  
+```py
+# Siapkan dataframe untuk analisis model
+models = pd.DataFrame(index=['train_mae', 'test_mae'], 
+                      columns=['KNN', 'RandomForest', 'Boosting'])
+```
+Hal ini juga akan digunakan pada tahap selanjutnya (_evaluation_). Kemudian siapkan tiga model yang akan digunakan.
+- _KNN Regressor_, parameter yang digunakan yaitu `n_neighbor`. Sebelum model dibuat, parameter dalam model ini dimasukkan ke dalam Grid Search terlebih dahulu untuk menemukan parameter terbaik.
+    ```py
+  # Gunakan gridsearch untuk mencari hasil terbaik
+  neighbors = list(range(1,15))
+  parameters = {
+      'n_neighbors':neighbors
+  }
+  knn = KNeighborsRegressor()
+  grid_search = GridSearchCV(knn, parameters, verbose=2)
+  grid_search.fit(X_train, y_train)
+  print("KNN GridSearch score: "+str(grid_search.best_score_))
+  print("KNN GridSearch params: "+str(grid_search.best_params_))
+  # Output
+  # KNN GridSearch score: 0.6715451895544013
+  # KNN GridSearch params: {'n_neighbors': 11}
+  ```  
+  Setelah itu, buat modelnya menggunakan perintah berikut.
+  ```py
+  # buat model prediksi
+  knn = KNeighborsRegressor(n_neighbors=11)
+  knn.fit(X_train, y_train)
+  ```
+  Model ini memiliki kelebihan yaitu tidak ada waktu tunggu untuk proses pelatihan dan juga mudah untuk diimplementasikan. Kelemahannya yaitu model ini tidak cocok digunakan untuk data yang besar dan juga sensitif pada noise dan missing value.
+- _Random Forest Regressor_, parameter yang digunakan yaitu n_estimator, max_depth, random_state, dan n_jobs. Sama seperti model KNN, parameter dalam model ini juga dimasukkan ke dalam _Grid Search_ terlebih dahulu. Bedanya ada pada parameter dan model yang digunakan.
+  ``` py
+  n_estimators = list(range(40,101,20))
+  max_depth = list(range(10,20,2))
+  parameters = {
+      'n_estimators':n_estimators,
+      'max_depth':max_depth
+  }
+  RF = RandomForestRegressor()
+  ```
+  Setelah melalui _Grid Search_, didapat parameter terbaik yaitu.  
+  ```
+  RF GridSearch score: 0.7324702141251758
+  RF GridSearch params: {'max_depth': 18, 'n_estimators': 100}
+  ```
+  Kemudian buat modelnya berdasarkan parameter tersebut.
+  ```py
+  # buat model prediksi
+  RF = RandomForestRegressor(n_estimators=100, max_depth=18, random_state=42, n_jobs=-1)
+  RF.fit(X_train, y_train)
+  ```
+  Model ini memiliki kelebihan yaitu dapat bekerja baik pada fitur _categorical_ dan _numerical_, stabil, tidak sensitif terhadap _noise_. Kelemahannya yaitu memiliki algoritma yang kompleks, sehingga memiliki waktu _training_ yang lebih lama.
+- _Ada Boosting Regressor_, parameter yang digunakan yaitu learning_rate dan random_state. Proses pencarian dengan _Grid Search_ masih sama seperti sebelumnya, tetapi ada yang berbeda pada model dan parameternya. Berikut potongan kode yang berbeda.
+  ``` py
+  parameters = {
+      'learning_rate':[0.1,0.3,0.5,0.05,0.005]
+  }
+  boosting = AdaBoostRegressor()
+  ```
+  Setelah melalui _Grid Search_, didapat parameter terbaik yaitu.  
+  ```
+  Boosting GridSearch score: 0.5273297505316186
+  Boosting GridSearch params: {'learning_rate': 0.05}
+  ```
+  Kemudian buat model berdasarkan parameter terbaik tersebut.
+  ```py
+  # buat model prediksi
+  boosting = AdaBoostRegressor(learning_rate=0.05, random_state=42)                             
+  boosting.fit(X_train, y_train)
+  ```
+  Model ini memeliki kelebihan yaitu kurang rentan terhadap _overfitting_. Kelemahannya yaitu model ini membutuhkan dataset yang berkualitas karena senstif terhadap _noise_ dan _outliers_.
 
+Kesimpulan model:  
 Dari ketiga model di atas, menurut saya, _random forest_ lah yang merupakan solusi terbaik untuk dataset proyek ini. _Random forest_ lebih stabil dan bekerja baik pada fitur _categorical_ dan _numerical_, di mana kedua fitur ini memiliki pengaruh terhadap prediksi yang dilakukan. Selain itu, model ini juga lebih aman jika bertemu _noise_. Meski algoritma ini perlu waktu yang lebih lama untuk proses _training_ dibanding kedua algoritma lainnya, tapi waktu itu tidak terlalu lama menurut hitungan manusia
 
 ## Evaluation
