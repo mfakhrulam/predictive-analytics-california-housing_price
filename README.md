@@ -108,9 +108,9 @@ Dari ketiga model di atas, menurut saya, _random forest_ lah yang merupakan solu
 
 ## Evaluation
 
-Dalam kasus regresi, ada beberapa metrik evaluasi yang dapat digunakan seperti Mean Squared Error (MSE), Root Mean Squared Error (RMSE), dan Mean Absolute Error (MAE). Metrik evaluasi yang digunakan yaitu Mean Absolute Error (MAE). MAE adalah rata-rata selisih mutlak nilai prediksi (predict value) dengan nilai sebenarnya (true value), artinya setiap selisih dari nilai prediksi dengan nilai sebenarnya akan dijumlahkan kemudian hasil itu akan dibagi dengan banyaknya data. Formula metrik MAE dapat dituliskan sebagai berikut:
-$$ MSE = \frac{1}{n} \Sigma_{i=1}^n|{y}-\hat{y}| $$ 
-Metrik MAE digunakan dalam proyek ini karena hasil prediksi yang diinginkan berupa harga rumah atau nilai selisih absolut sebenarnya, bukan selisih yang dikuadratkan. Selisih yang dikuadratkan dalam konteks ini tidaklah cocok. Karena itu dipilihlah metrik MAE untuk mengukur tingkat _error_ model.
+Dalam kasus regresi, ada beberapa metrik evaluasi yang dapat digunakan seperti Mean Squared Error (MSE), Root Mean Squared Error (RMSE), dan Mean Absolute Error (MAE). Metrik evaluasi yang digunakan yaitu Mean Absolute Error (MAE). MAE adalah rata-rata selisih mutlak nilai prediksi (predict value) dengan nilai sebenarnya (true value), artinya setiap selisih dari nilai prediksi dengan nilai sebenarnya akan dijumlahkan kemudian hasil itu akan dibagi dengan banyaknya data. Formula metrik MAE dapat dituliskan sebagai berikut:   
+![Formula MAE](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/08-MAE.png)   
+Metrik MAE digunakan dalam proyek ini karena hasil prediksi yang diinginkan berupa harga rumah atau nilai selisih absolut sebenarnya, bukan selisih yang dikuadratkan. Selisih yang dikuadratkan dalam konteks ini tidaklah cocok. Karena itu dipilihlah metrik MAE untuk mengukur tingkat _error_ model.  
 
 Kesimpulan hasil proyek:
 - Model _machine learning_ KNN dan RF sudah memenuhi batas 10% MAE yang telah disesuakan dengan skala data, artinya model sudah cukup bagus. Sedangkan model _Boosting_ masih berada di atas batas tersebut. Batas MAE itu didapat dari:
@@ -126,8 +126,11 @@ Kesimpulan hasil proyek:
   Boosting	48981.361864	50111.97536
   ```
 - Ketiga model masih _overfit_, terutama model _Random Forest_.
+- Hasil _error_ MAE paling kecil ada pada model _Random Forest_ yang artinya model ini merupakan model yang terbaik dibanding dua model lain.
+  ![Metrik evaluasi](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/09-metrik-evaluasi.png)  
 
 ## Referensi
 <a id="1">[1]</a> 
-[M. Kovářík, and R. Benda, “Applied machine learning predictive modelling in regional spatial data analysis problem,” Financ. Perform. Firms Sci. Educ. Pract. 2015, pp. 701–715, 2015.](https://web.archive.org/web/20180722041033/http://www.ufu.utb.cz/konference/sbornik2015.pdf)
+[M. Kovářík, and R. Benda, “Applied machine learning predictive modelling in regional spatial data analysis problem,” Financ. Perform. Firms Sci. Educ. Pract. 2015, pp. 701–715, 2015.](https://web.archive.org/web/20180722041033/http://www.ufu.utb.cz/konference/sbornik2015.pdf)  
+
 
