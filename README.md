@@ -4,7 +4,8 @@
 
 _Machine learning_ merupakan salah satu cabang ilmu komputer yang menggunakan algoritma untuk mengidentifikasi pola dalam suatu data dan menyelesaikan permasalahan menggunakan pola tersebut tanpa perlu secara langsung diprogram olah manusia. Proyek ini memanfaatkan _machine learning_ untuk menyelesaikan permasalahan dalam dunia bisnis/ekonomi. Bidang bisnis yang dimaksud adalah untuk memprediksi nilai atau harga suatu rumah dalam kompleks tertentu. 
 
-Bayangkan apabila Anda seorang pengusaha _real estate_ yang ingin mengembangkan bisnisnya ke daerah yang lebih luas. Misalkan Anda ingin membeli rumah lalu menjualnya kembali kepada orang lain. Agar proses pemberian harga lebih efisien, Anda dapat menerapkan automasi dalam sistem untuk memprediksi harga atau nilai suatu rumah dengan teknik _predictive modelling_ menggunakan algoritma regresi. Prediksi yang dilakukan oleh model _machine learning_ tentu saja dipengaruhi oleh berbagai faktor, seperti total ruangan, total kamar tidur, jarak rumah dari laut, umur rumah, pendapatan pemilik rumah, dan lain sebagainya. Adapun artikel yang saya jadikan referensi yaitu jurnal internasional [FINANCE AND PERFORMANCE OF FIRMS IN SCIENCE,EDUCATION AND PRACTICE](https://web.archive.org/web/20180722041033/http://www.ufu.utb.cz/konference/sbornik2015.pdf) pada halaman 701.
+Bayangkan apabila Anda seorang pengusaha _real estate_ yang ingin mengembangkan bisnisnya ke daerah yang lebih luas. Misalkan Anda ingin membeli rumah lalu menjualnya kembali kepada orang lain. Agar proses pemberian harga lebih efisien, Anda dapat menerapkan automasi dalam sistem untuk memprediksi harga atau nilai suatu rumah dengan teknik _predictive modelling_ menggunakan algoritma regresi. Prediksi yang dilakukan oleh model _machine learning_ tentu saja dipengaruhi oleh berbagai faktor, seperti total ruangan, total kamar tidur, jarak rumah dari laut, umur rumah, pendapatan pemilik rumah, dan lain sebagainya. Adapun referensi yang saya gunakan yaitu artikel yang ada pada halaman 701 dalam jurnal internasional berikut.  [[1]](#1)  
+
 
 
 ## Business Understanding
@@ -125,4 +126,8 @@ Kesimpulan hasil proyek:
   Boosting	48981.361864	50111.97536
   ```
 - Ketiga model masih _overfit_, terutama model _Random Forest_.
+
+## Referensi
+<a id="1">[1]</a> 
+[M. Kovářík, and R. Benda, “Applied machine learning predictive modelling in regional spatial data analysis problem,” Financ. Perform. Firms Sci. Educ. Pract. 2015, pp. 701–715, 2015.](https://web.archive.org/web/20180722041033/http://www.ufu.utb.cz/konference/sbornik2015.pdf)
 
