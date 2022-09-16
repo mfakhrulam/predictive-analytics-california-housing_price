@@ -122,7 +122,7 @@ Hal ini juga akan digunakan pada tahap selanjutnya (_evaluation_). Kemudian siap
   # KNN GridSearch score: 0.6715451895544013
   # KNN GridSearch params: {'n_neighbors': 11}
   ```  
-  Setelah itu, buat modelnya menggunakan perintah berikut.
+  Setelah didapat `n_neighbor` terbaik yaitu 11, buat modelnya menggunakan perintah berikut.
   ```py
   # buat model prediksi
   knn = KNeighborsRegressor(n_neighbors=11)
@@ -144,7 +144,7 @@ Hal ini juga akan digunakan pada tahap selanjutnya (_evaluation_). Kemudian siap
   RF GridSearch score: 0.7324702141251758
   RF GridSearch params: {'max_depth': 18, 'n_estimators': 100}
   ```
-  Kemudian buat modelnya berdasarkan parameter tersebut.
+  Kemudian buat modelnya berdasarkan parameter tersebut (`max_depth=18` dan `n_estimators=100`) dan tambahkan `random_state=42` untuk mengacak sampel yang digunakan serta `n_jobs=-1` untuk menggunakan semua prosesor secara paralel.
   ```py
   # buat model prediksi
   RF = RandomForestRegressor(n_estimators=100, max_depth=18, random_state=42, n_jobs=-1)
@@ -163,7 +163,7 @@ Hal ini juga akan digunakan pada tahap selanjutnya (_evaluation_). Kemudian siap
   Boosting GridSearch score: 0.5273297505316186
   Boosting GridSearch params: {'learning_rate': 0.05}
   ```
-  Kemudian buat model berdasarkan parameter terbaik tersebut.
+  Kemudian buat model berdasarkan parameter terbaik tersebut (`learning_rate=0.05` dan tambahkan `random_state=42` untuk mengacak sampel yang digunakan.
   ```py
   # buat model prediksi
   boosting = AdaBoostRegressor(learning_rate=0.05, random_state=42)                             
