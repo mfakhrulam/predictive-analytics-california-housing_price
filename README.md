@@ -92,7 +92,7 @@ Tampak bahwa banyak fitur memiliki _outliers_.
 
 Ada beberapa teknik _data preparation_ yang digunakan dalam proyek ini, antara lain:
 - Menghilangkan _Outliers_ (_Outliers Removal_) adalah teknik untuk menghilangkan data yang nilainya sangat jauh daripada data lain. _Outliers_ perlu dihilangkan karena akan menyebabkan bias pada model _machine learning_ yang akan dibuat. Fitur yang mengalami _outliers_ yaitu `total_rooms`, `total_bedrooms`, `population`, `households`, `median_income`, dan `meidan_house_value`.  
-- _Encoding_ fitur kategori adalah teknik untuk mengubah fitur _categorical_ ke dalam bentuk vektor biner yang bernilai integer 0 dan 1. Teknik ini dilakukan karena banyak algoritma _machine learning_ yang tidak dapat mengolah data berbentuk _categorical_. Fitur yang perlu diterapkan encoding yaitu `ocean_proximity' karena merupakan fitur kategori.  
+- _Encoding_ fitur kategori adalah teknik untuk mengubah fitur _categorical_ ke dalam bentuk vektor biner yang bernilai integer 0 dan 1. Teknik ini dilakukan karena banyak algoritma _machine learning_ yang tidak dapat mengolah data berbentuk _categorical_. Fitur yang perlu diterapkan _encoding_ yaitu `ocean_proximity' karena merupakan fitur kategori.  
 - _Reduction dimensions_ adalah teknik untuk mengurangi dimensi fitur dengan menggabungkan dua fitur atau lebih yang memiliki tingkat korelasi tinggi dan mengandung informasi yang sama. Teknik ini perlu untuk dilakukan agar model tidak menjadi lebih kompleks karena fitur yang banyak dapat mengakibatkan _data point_ tidak representatif, sehingga mengurangi performa model. Fitur yang diterapkan teknik ini yaitu fitur `longitude` dan `latitude` karena kedua fitur ini memiliki korelasi tinggi dan memiliki informasi yang sama sebagai letak rumah. Kedua fitur itu disatukan menjadi fitur `coordinate`.
 - _Train test split_ adalah proses untuk membagi data menjadi dua bagian, yaitu data _train_ dan data _test_. Ini diperlukan agar kita dapat mengetes model apakah sudah layak untuk memprediksi data yang belum pernah ditemui sebelumnya, sebelum masuk ke tahap _deployment_. Dalam proyek ini, data yang telah melewati proses sebelumnya dibagi menjadi dua dengan proporsi 80% data _train_ dan 20% data _test_.  
 - Standarisasi adalah proses untuk menormalisasi data agar lebih mudah diterima oleh model _machine learning_. Ini juga diperlukan karena data _numerical_ yang ada di dataset memiliki nilai maksimum dan minimum yang berbeda beda. Hal ini dapat menjadi bias dalam model karena model menganggap data yang memiliki nilai yang besar merupakan fitur yang terpenting, padahal belum tentu seperti itu. Karena alasan itulah, standarisasi perlu dilakukan. Standarisasi dilakukan menggunakan `StandarScaler` dari _library scikit-learn_ karena data terdistribusi normal jika dilihat dari grafiknya. Fitur yang dikenai standarisasi yaitu fitur numerik antara lain `housing_median_age`, `total_rooms`, `total_bedrooms`, `population`, `households`, `median_income`, dan `coordinate`.
@@ -106,86 +106,44 @@ models = pd.DataFrame(index=['train_mae', 'test_mae'],
                       columns=['KNN', 'RandomForest', 'Boosting'])
 ```
 Hal ini juga akan digunakan pada tahap selanjutnya (_evaluation_). Kemudian siapkan tiga model yang akan digunakan.
-- _KNN Regressor_, parameter yang digunakan yaitu `n_neighbor`. Sebelum model dibuat, parameter dalam model ini dimasukkan ke dalam Grid Search terlebih dahulu untuk menemukan parameter terbaik.
-    ```py
-  # Gunakan gridsearch untuk mencari hasil terbaik
-  neighbors = list(range(1,15))
-  parameters = {
-      'n_neighbors':neighbors
-  }
-  knn = KNeighborsRegressor()
-  grid_search = GridSearchCV(knn, parameters, verbose=2)
-  grid_search.fit(X_train, y_train)
-  print("KNN GridSearch score: "+str(grid_search.best_score_))
-  print("KNN GridSearch params: "+str(grid_search.best_params_))
-  # Output
-  # KNN GridSearch score: 0.6715451895544013
-  # KNN GridSearch params: {'n_neighbors': 11}
+- _KNN Regressor_, parameter yang digunakan yaitu `n_neighbor`. Sebelum model dibuat, parameter dalam model ini dimasukkan ke dalam _Grid Search_ terlebih dahulu untuk menemukan parameter terbaik. _Grid Search_ akan mencoba setiap kemungkinan parameter yang diberikan. Kumpulan parameter disimpan dalam sebuah set yang berisi tiap parameter yang akan diatur beserta list nilainya (dalam bentuk _key-value_). Di sini parameter yang akan dimasukkan cukup `n_neighbor` saja dengan nilai percobaan antara angka 1-15.  
+  ```
+  KNN GridSearch score: 0.6715451895544013
+  KNN GridSearch params: {'n_neighbors': 11}
   ```  
-  Setelah didapat `n_neighbor` terbaik yaitu 11, buat modelnya menggunakan perintah berikut.
-  ```py
-  # buat model prediksi
-  knn = KNeighborsRegressor(n_neighbors=11)
-  knn.fit(X_train, y_train)
-  ```
+  Setelah didapat `n_neighbor` terbaik yaitu 11, buat modelnya memanggil `KNeighborsRegressor` dari library _scikit-learn_ dengan memasukkan parameter tersebut.  
   Model ini memiliki kelebihan yaitu tidak ada waktu tunggu untuk proses pelatihan dan juga mudah untuk diimplementasikan. Kelemahannya yaitu model ini tidak cocok digunakan untuk data yang besar dan juga sensitif pada noise dan missing value.
-- _Random Forest Regressor_, parameter yang digunakan yaitu n_estimator, max_depth, random_state, dan n_jobs. Sama seperti model KNN, parameter dalam model ini juga dimasukkan ke dalam _Grid Search_ terlebih dahulu. Bedanya ada pada parameter dan model yang digunakan.
-  ``` py
-  n_estimators = list(range(40,101,20))
-  max_depth = list(range(10,20,2))
-  parameters = {
-      'n_estimators':n_estimators,
-      'max_depth':max_depth
-  }
-  RF = RandomForestRegressor()
-  ```
+- _Random Forest Regressor_, parameter yang digunakan yaitu `n_estimator`, `max_depth`, `random_state`, dan `n_jobs`. Sama seperti model KNN, parameter dalam model ini juga dimasukkan ke dalam _Grid Search_ terlebih dahulu. Bedanya ada pada parameter dan model yang digunakan. Parameter yang akan dicoba dalam _Grid Search_ hanya `n_estimator` dengan nilai percobaan 40, 60, 80, dan 100, dan  `max_depth` dengan nilai percobaan 10,12,14,16, dan 18. `n_estimator` ini merupakan banyaknya pohon, sementara `max_depth` merupakan kedalaman maksimum dari pohon tersebut.  
   Setelah melalui _Grid Search_, didapat parameter terbaik yaitu.  
   ```
   RF GridSearch score: 0.7324702141251758
   RF GridSearch params: {'max_depth': 18, 'n_estimators': 100}
   ```
-  Kemudian buat modelnya berdasarkan parameter tersebut (`max_depth=18` dan `n_estimators=100`) dan tambahkan `random_state=42` untuk mengacak sampel yang digunakan serta `n_jobs=-1` untuk menggunakan semua prosesor secara paralel.
-  ```py
-  # buat model prediksi
-  RF = RandomForestRegressor(n_estimators=100, max_depth=18, random_state=42, n_jobs=-1)
-  RF.fit(X_train, y_train)
-  ```
+  Kemudian buat modelnya berdasarkan parameter tersebut (`max_depth=18` dan `n_estimators=100`) dengan memanggil `RandomForestRegressor` dari library _scikit-learn_ dan tambahkan juga `random_state=42` untuk mengacak sampel yang digunakan serta `n_jobs=-1` untuk menggunakan semua prosesor secara paralel ketika membuat modelnya.  
   Model ini memiliki kelebihan yaitu dapat bekerja baik pada fitur _categorical_ dan _numerical_, stabil, tidak sensitif terhadap _noise_. Kelemahannya yaitu memiliki algoritma yang kompleks, sehingga memiliki waktu _training_ yang lebih lama.
-- _Ada Boosting Regressor_, parameter yang digunakan yaitu learning_rate dan random_state. Proses pencarian dengan _Grid Search_ masih sama seperti sebelumnya, tetapi ada yang berbeda pada model dan parameternya. Berikut potongan kode yang berbeda.
-  ``` py
-  parameters = {
-      'learning_rate':[0.1,0.3,0.5,0.05,0.005]
-  }
-  boosting = AdaBoostRegressor()
-  ```
-  Setelah melalui _Grid Search_, didapat parameter terbaik yaitu.  
+- _Ada Boosting Regressor_, parameter yang digunakan yaitu `learning_rate` dan `random_state`. Proses pencarian dengan _Grid Search_ masih sama seperti sebelumnya, tetapi ada yang berbeda pada model dan parameternya. Parameter yang akan dimasukkan ke dalam _Grid Search_ adalah `learning_rate` dengan nilai 0.1, 0.3, 0.5, 0.05, dan 0.005.  
+  Setelah melalui _Grid Search_, didapat parameter terbaik yaitu `learning_rate=0.05`.
   ```
   Boosting GridSearch score: 0.5273297505316186
   Boosting GridSearch params: {'learning_rate': 0.05}
   ```
-  Kemudian buat model berdasarkan parameter terbaik tersebut (`learning_rate=0.05` dan tambahkan `random_state=42` untuk mengacak sampel yang digunakan.
-  ```py
-  # buat model prediksi
-  boosting = AdaBoostRegressor(learning_rate=0.05, random_state=42)                             
-  boosting.fit(X_train, y_train)
-  ```
-  Model ini memeliki kelebihan yaitu kurang rentan terhadap _overfitting_. Kelemahannya yaitu model ini membutuhkan dataset yang berkualitas karena senstif terhadap _noise_ dan _outliers_.
+  Kemudian buat model berdasarkan parameter terbaik tersebut (`learning_rate=0.05`) dengan memanggil `AdaBoostRegressor` dari library _scikit-learn_ dan tambahkan `random_state=42` untuk mengacak sampel yang digunakan.  
+  Model ini memiliki kelebihan yaitu kurang rentan terhadap _overfitting_. Kelemahannya yaitu model ini membutuhkan dataset yang berkualitas karena senstif terhadap _noise_ dan _outliers_.
 
 Kesimpulan model:  
 Dari ketiga model di atas, menurut saya, _random forest_ lah yang merupakan solusi terbaik untuk dataset proyek ini. _Random forest_ lebih stabil dan bekerja baik pada fitur _categorical_ dan _numerical_, di mana kedua fitur ini memiliki pengaruh terhadap prediksi yang dilakukan. Selain itu, model ini juga lebih aman jika bertemu _noise_. Meski algoritma ini perlu waktu yang lebih lama untuk proses _training_ dibanding kedua algoritma lainnya, tapi waktu itu tidak terlalu lama menurut hitungan manusia
 
 ## Evaluation
 
-Dalam kasus regresi, ada beberapa metrik evaluasi yang dapat digunakan seperti Mean Squared Error (MSE), Root Mean Squared Error (RMSE), dan Mean Absolute Error (MAE). Metrik evaluasi yang digunakan yaitu Mean Absolute Error (MAE). MAE adalah rata-rata selisih mutlak nilai prediksi (predict value) dengan nilai sebenarnya (true value), artinya setiap selisih dari nilai prediksi dengan nilai sebenarnya akan dijumlahkan kemudian hasil itu akan dibagi dengan banyaknya data. Formula metrik MAE dapat dituliskan sebagai berikut:   
+Dalam kasus regresi, ada beberapa metrik evaluasi yang dapat digunakan seperti _Mean Squared Error_ (MSE), _Root Mean Squared Error_ (RMSE), dan _Mean Absolute Error_ (MAE). Metrik evaluasi yang digunakan yaitu _Mean Absolute Error_ (MAE). MAE adalah rata-rata selisih mutlak nilai prediksi (_predict value_) dengan nilai sebenarnya (_true value_), artinya setiap selisih dari nilai prediksi dengan nilai sebenarnya akan dijumlahkan kemudian hasil itu akan dibagi dengan banyaknya data. Formula metrik MAE dapat dituliskan sebagai berikut:   
 ![Formula MAE](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/08-MAE.png)   
 Metrik MAE digunakan dalam proyek ini karena hasil prediksi yang diinginkan berupa harga rumah atau nilai selisih absolut sebenarnya, bukan selisih yang dikuadratkan. Selisih yang dikuadratkan dalam konteks ini tidaklah cocok. Karena itu dipilihlah metrik MAE untuk mengukur tingkat _error_ model.  
 
 Kesimpulan hasil proyek:
-- Model _machine learning_ KNN dan RF sudah memenuhi batas 10% MAE yang telah disesuakan dengan skala data, artinya model sudah cukup bagus. Sedangkan model _Boosting_ masih berada di atas batas tersebut. Batas MAE itu didapat dari:
+- Model _machine learning_ KNN dan RF sudah memenuhi batas 10% MAE yang telah disesuakan dengan skala data, artinya model sudah cukup bagus. Sedangkan model _Boosting_ masih berada di atas batas tersebut. Batas MAE itu didapat dari nilai absolut pengurangan nilai maksimum `median_house_value` dengan nilai minimun `median_house_value` yang dikali dengan 0.10. Perhitungan ini akan mengeluarkan hasil 46720 jika dibulatkan.
   ```py
-  mae_scale = abs(housing['median_house_value'].max()-housing['median_house_value'].min())*0.1
-  mae_scale
-  # 46720.100000000006 (output)
+  # Output
+  # 46720.100000000006 
   ```
   ```
 	              mae_train       mae_test
@@ -193,15 +151,15 @@ Kesimpulan hasil proyek:
   RF	        13907.016915	33080.75042
   Boosting	48981.361864	50111.97536
   ```
+  Jika dilihat dari tabel di atas, nilai MAE pada KNN dan RF sudah kurang dari batas MAE yang sudah disebutkan (46720) yaitu (34077, 38032) dan (13907, 33080) untuk MAE data _train_ dan data _test_. Sedangkan untuk model Boosting, nilai MAE-nya masih di atas batas (46720) yaitu (48981, 50111) untuk MAE data _train_ dan data _test_.
+
 - Ketiga model masih _overfit_, terutama model _Random Forest_.
 - Model _Random Forest_ memiliki hasil _error_ MAE paling kecil yang artinya model ini merupakan model yang terbaik dibanding dua model lain.  
   ![Metrik evaluasi](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/09-metrik-evaluasi.png)  
   Selain itu, model ini juga yang paling presisi untuk memprediksi harga. Berikut grafik perbedaan prediksi ketiga model.  
   ![Perbandingan prediksi](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/10-prediksi.png)  
   
-
 ## Referensi
-<a id="1">[1]</a> 
-[M. Kovářík, and R. Benda, “Applied machine learning predictive modelling in regional spatial data analysis problem,” Financ. Perform. Firms Sci. Educ. Pract. 2015, pp. 701–715, 2015.](https://web.archive.org/web/20180722041033/http://www.ufu.utb.cz/konference/sbornik2015.pdf)  
+<a id="1">[1]</a> [M. Kovářík, and R. Benda, “Applied machine learning predictive modelling in regional spatial data analysis problem,” Financ. Perform. Firms Sci. Educ. Pract. 2015, pp. 701–715, 2015.](https://web.archive.org/web/20180722041033/http://www.ufu.utb.cz/konference/sbornik2015.pdf)  
 
 
