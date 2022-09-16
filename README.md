@@ -61,27 +61,27 @@ housing.isnull().sum()
 ```py
 sns.heatmap(housing.isnull(), cbar = False, cmap='flare')
 ```
-![Heatmap Mising Value](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/01-heatmap-missing-value.png)  
+![Heatmap Mising Value](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/01-heatmap-missing-value.png)  
 Nilai yang kosong itu dapat diisi menggunakan median dari data terkait.  
 ```py
 housing['total_bedrooms'].fillna(value=housing['total_bedrooms'].median(), inplace=True)
 ```
 Selanjutnya yaitu melihat _outliers_ dari data.  
-![Outliers](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/02-outliers.png)  
+![Outliers](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/02-outliers.png)  
 
 Tampak bahwa banyak fitur memiliki _outliers_.  
 **Kemudian akan ditampilkan analisis univariate.** 
 **Categorical**  
-![Univariate-Categorical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/03-univariate-categorical.png)  
+![Univariate-Categorical](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/03-univariate-categorical.png)  
 **Numerical**  
-![Univariate-Numerical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/04-univariate-numerical.png)  
+![Univariate-Numerical](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/04-univariate-numerical.png)  
 **Kemudian akan ditampilkan analisis multivariate**.   
 **Categorical**  
-![Multivariate-Categorical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/05-multivariate-categorical.png)  
+![Multivariate-Categorical](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/05-multivariate-categorical.png)  
 **Numerical**  
-![Multivariate-Numerical](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/06-multivariate-numerical.png)  
+![Multivariate-Numerical](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/06-multivariate-numerical.png)  
 **Correlation Matrix untuk Fitur Numerical**  
-![Correlation Matrix](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/07-correlation-matrix.png)  
+![Correlation Matrix](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/07-correlation-matrix.png)  
 **Kesimpulan EDA**   
 - Terdapat _outliers_ di banyak fitur yang perlu dihilangkan  
 - Terdapat korelasi yang cukup tinggi antara `median_house_value` (target) dengan `median_income`  
@@ -177,7 +177,7 @@ Dari ketiga model di atas, menurut saya, _random forest_ lah yang merupakan solu
 ## Evaluation
 
 Dalam kasus regresi, ada beberapa metrik evaluasi yang dapat digunakan seperti Mean Squared Error (MSE), Root Mean Squared Error (RMSE), dan Mean Absolute Error (MAE). Metrik evaluasi yang digunakan yaitu Mean Absolute Error (MAE). MAE adalah rata-rata selisih mutlak nilai prediksi (predict value) dengan nilai sebenarnya (true value), artinya setiap selisih dari nilai prediksi dengan nilai sebenarnya akan dijumlahkan kemudian hasil itu akan dibagi dengan banyaknya data. Formula metrik MAE dapat dituliskan sebagai berikut:   
-![Formula MAE](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/08-MAE.png)   
+![Formula MAE](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/08-MAE.png)   
 Metrik MAE digunakan dalam proyek ini karena hasil prediksi yang diinginkan berupa harga rumah atau nilai selisih absolut sebenarnya, bukan selisih yang dikuadratkan. Selisih yang dikuadratkan dalam konteks ini tidaklah cocok. Karena itu dipilihlah metrik MAE untuk mengukur tingkat _error_ model.  
 
 Kesimpulan hasil proyek:
@@ -195,9 +195,9 @@ Kesimpulan hasil proyek:
   ```
 - Ketiga model masih _overfit_, terutama model _Random Forest_.
 - Model _Random Forest_ memiliki hasil _error_ MAE paling kecil yang artinya model ini merupakan model yang terbaik dibanding dua model lain.  
-  ![Metrik evaluasi](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/09-metrik-evaluasi.png)  
+  ![Metrik evaluasi](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/09-metrik-evaluasi.png)  
   Selain itu, model ini juga yang paling presisi untuk memprediksi harga. Berikut grafik perbedaan prediksi ketiga model.  
-  ![Perbandingan prediksi](https://github.com/mfakhrulam/predictive-analytics-california-housing_price/blob/main/images/10-prediksi.png)  
+  ![Perbandingan prediksi](https://raw.githubusercontent.com/mfakhrulam/predictive-analytics-california-housing_price/main/images/10-prediksi.png)  
   
 
 ## Referensi
